@@ -1,3 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 午餐命運之輪</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .lunch-widget-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .lunch-widget-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .lunch-widget-title {
+            color: #ffd700;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        .lunch-widget-subtitle {
+            color: #ccc;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+        .lunch-widget-q-group {
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .lunch-widget-q-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e0e0ff;
+        }
+        .lunch-widget-label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .lunch-widget-label:hover {
+            color: #ffd700;
+        }
+        .lunch-widget-label input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #ffd700;
+        }
+        .lunch-widget-btn {
+            background: linear-gradient(45deg, #ff007f, #7f00ff);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        .lunch-widget-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.6);
+        }
+        #lunch-widget-result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px dashed #ffd700;
+            border-radius: 8px;
+            display: none;
+            animation: widgetFadeIn 0.5s ease-out;
+        }
+        #lunch-widget-result-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        @keyframes widgetFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
 <div class="lunch-widget-container">
     <div class="lunch-widget-card">
         <h2 class="lunch-widget-title">🔮 午餐命運之輪</h2>
@@ -22,33 +140,4 @@
                 <label class="lunch-widget-label"><input type="radio" name="widget_heavy" value="no"> 偏向清淡健康</label>
             </div>
 
-            <button type="button" class="lunch-widget-btn" onclick="drawWidgetLunch()">啟動命運之輪 🎲</button>
-        </form>
-
-        <div id="lunch-widget-result-box">
-            <div>✨ 宇宙指引你的午餐首選 ✨</div>
-            <div id="lunch-widget-result-text">⏳ 感應中...</div>
-            <div style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">不要再猶豫了，快去訂餐吧！</div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .lunch-widget-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        box-sizing: border-box;
-    }
-    .lunch-widget-card {
-        background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-        color: #fff;
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        max-width: 500px;
-        width: 100%;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255,
+            <button type="button" class="lunch-widget-btn" onclick="drawLunch()">啟動命運
