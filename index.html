@@ -93,7 +93,8 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 0, 127, 0.6);
         }
-        #lunch-widget-result-box {
+        /* 這裡對齊短 ID */
+        #result-box {
             margin-top: 25px;
             padding: 20px;
             background: rgba(255, 215, 0, 0.1);
@@ -102,7 +103,7 @@
             display: none;
             animation: widgetFadeIn 0.5s ease-out;
         }
-        #lunch-widget-result-text {
+        #result-text {
             font-size: 1.6rem;
             font-weight: bold;
             color: #ffd700;
@@ -118,7 +119,7 @@
 
 <div class="lunch-widget-container">
     <div class="lunch-widget-card">
-        <h2 class="lunch-widget-title">🔮 午餐命運之輪</h2>
+        <h2 class="lunch-widget-title">✨ 命運之輪 ✨</h2>
         <p class="lunch-widget-subtitle">傾聽你靈魂的飢餓感，做出直覺的選擇：</p>
         
         <form id="lunchForm">
@@ -140,4 +141,64 @@
                 <label class="lunch-widget-label"><input type="radio" name="widget_heavy" value="no"> 偏向清淡健康</label>
             </div>
 
-            <button type="button" class="lunch-widget-btn" onclick="drawLunch()">啟動命運
+            <button type="button" class="lunch-widget-btn" onclick="drawLunch()">啟動命運之輪 🎲</button>
+        </form>
+
+        <div id="result-box">
+            <div>✨ 宇宙指引你的午餐首選 ✨</div>
+            <div id="result-text">⏳ 感應中...</div>
+            <div style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">不要再猶豫了，快去訂餐吧！</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const widgetLunchPool = [
+        { name: "日式拉麵", soup: true, rice: false, heavy: true },
+        { name: "熱騰騰的小火鍋", soup: true, rice: true, heavy: true },
+        { name: "台式便當/乾麵", soup: false, rice: true, heavy: false },
+        { name: "健康水煮餐盒", soup: false, rice: true, heavy: false },
+        { name: "義大利麵/披薩", soup: false, rice: false, heavy: true },
+        { name: "麥當勞/炸雞速食", soup: false, rice: false, heavy: true },
+        { name: "超商簡單吃", soup: false, rice: false, heavy: false },
+        { name: "牛肉麵/水餃", soup: true, rice: false, heavy: false }
+    ];
+
+    function drawLunch() {
+        // 1. 取得選擇
+        const wantSoup = document.querySelector('input[name="widget_soup"]:checked').value === "yes";
+        const wantRice = document.querySelector('input[name="widget_rice"]:checked').value === "yes";
+        const wantHeavy = document.querySelector('input[name="widget_heavy"]:checked').value === "yes";
+
+        // 2. 篩選
+        let candidates = widgetLunchPool.filter(item => {
+            let score = 0;
+            if (item.soup === wantSoup) score++;
+            if (item.rice === wantRice) score++;
+            if (item.heavy === wantHeavy) score++;
+            return score >= 2;
+        });
+
+        if (candidates.length === 0) {
+            candidates = widgetLunchPool;
+        }
+
+        // 3. 抽獎
+        const randomIndex = Math.floor(Math.random() * candidates.length);
+        const finalChoice = candidates[randomIndex].name;
+
+        // 4. 顯示（這裡修正了 ID 名稱）
+        const resultBox = document.getElementById('result-box');
+        const resultText = document.getElementById('result-text');
+        
+        if(resultBox && resultText) {
+            resultBox.style.display = 'block';
+            resultText.innerText = `【 ${finalChoice} 】`;
+        } else {
+            alert("找不到結果顯示區域，程式碼 ID 設定有誤！");
+        }
+    }
+</script>
+
+</body>
+</html>
