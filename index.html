@@ -17,14 +17,7 @@
             padding: 20px;
             box-sizing: border-box;
         }
-        .lunch-widget-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .lunch-widget-card {
+        .container {
             background: rgba(255, 255, 255, 0.05);
             padding: 30px;
             border-radius: 16px;
@@ -36,46 +29,46 @@
             text-align: center;
             box-sizing: border-box;
         }
-        .lunch-widget-title {
+        h2 {
             color: #ffd700;
             margin-top: 0;
             margin-bottom: 10px;
             font-size: 1.8rem;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
-        .lunch-widget-subtitle {
+        p {
             color: #ccc;
             font-size: 0.95rem;
             margin-bottom: 25px;
         }
-        .lunch-widget-q-group {
+        .q-group {
             margin-bottom: 20px;
             text-align: left;
             background: rgba(255, 255, 255, 0.02);
             padding: 15px;
             border-radius: 8px;
         }
-        .lunch-widget-q-title {
+        .q-title {
             font-size: 1rem;
             font-weight: bold;
             margin-bottom: 10px;
             color: #e0e0ff;
         }
-        .lunch-widget-label {
+        label {
             display: block;
             margin: 8px 0;
             cursor: pointer;
             font-size: 0.95rem;
             transition: color 0.2s;
         }
-        .lunch-widget-label:hover {
+        label:hover {
             color: #ffd700;
         }
-        .lunch-widget-label input[type="radio"] {
+        input[type="radio"] {
             margin-right: 10px;
             accent-color: #ffd700;
         }
-        .lunch-widget-btn {
+        .btn {
             background: linear-gradient(45deg, #ff007f, #7f00ff);
             color: white;
             border: none;
@@ -89,11 +82,10 @@
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
         }
-        .lunch-widget-btn:hover {
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 0, 127, 0.6);
         }
-        /* 這裡對齊短 ID */
         #result-box {
             margin-top: 25px;
             padding: 20px;
@@ -101,7 +93,7 @@
             border: 2px dashed #ffd700;
             border-radius: 8px;
             display: none;
-            animation: widgetFadeIn 0.5s ease-out;
+            animation: fadeIn 0.5s ease-out;
         }
         #result-text {
             font-size: 1.6rem;
@@ -109,7 +101,7 @@
             color: #ffd700;
             margin: 10px 0;
         }
-        @keyframes widgetFadeIn {
+        @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -117,43 +109,41 @@
 </head>
 <body>
 
-<div class="lunch-widget-container">
-    <div class="lunch-widget-card">
-        <h2 class="lunch-widget-title">✨ 命運之輪 ✨</h2>
-        <p class="lunch-widget-subtitle">傾聽你靈魂的飢餓感，做出直覺的選擇：</p>
-        
-        <form id="lunchForm">
-            <div class="lunch-widget-q-group">
-                <div class="lunch-widget-q-title">Q1: 今天想喝熱湯，還是吃乾的？</div>
-                <label class="lunch-widget-label"><input type="radio" name="widget_soup" value="yes" checked> 想要有熱湯喝</label>
-                <label class="lunch-widget-label"><input type="radio" name="widget_soup" value="no"> 不要湯，乾的就好</label>
-            </div>
-
-            <div class="lunch-widget-q-group">
-                <div class="lunch-widget-q-title">Q2: 主食想要吃飯，還是麵食/其他？</div>
-                <label class="lunch-widget-label"><input type="radio" name="widget_rice" value="yes" checked> 要吃飯（便當、丼飯）</label>
-                <label class="lunch-widget-label"><input type="radio" name="widget_rice" value="no"> 吃麵或其它澱粉（拉麵、披薩）</label>
-            </div>
-
-            <div class="lunch-widget-q-group">
-                <div class="lunch-widget-q-title">Q3: 想吃邪惡重口味，還是清淡點？</div>
-                <label class="lunch-widget-label"><input type="radio" name="widget_heavy" value="yes" checked> 越邪惡、越滿足越好！</label>
-                <label class="lunch-widget-label"><input type="radio" name="widget_heavy" value="no"> 偏向清淡健康</label>
-            </div>
-
-            <button type="button" class="lunch-widget-btn" onclick="drawLunch()">啟動命運之輪 🎲</button>
-        </form>
-
-        <div id="result-box">
-            <div>✨ 宇宙指引你的午餐首選 ✨</div>
-            <div id="result-text">⏳ 感應中...</div>
-            <div style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">不要再猶豫了，快去訂餐吧！</div>
+<div class="container">
+    <h2>✨ 命運之輪 ✨</h2>
+    <p>傾聽你靈魂的飢餓感，做出直覺的選擇：</p>
+    
+    <form id="lunchForm">
+        <div class="q-group">
+            <div class="q-title">Q1: 今天想喝熱湯，還是吃乾的？</div>
+            <label><input type="radio" name="soup" value="yes" checked> 想要有熱湯喝</label>
+            <label><input type="radio" name="soup" value="no"> 不要湯，乾的就好</label>
         </div>
+
+        <div class="q-group">
+            <div class="q-title">Q2: 主食想要吃飯，還是麵食/其他？</div>
+            <label><input type="radio" name="rice" value="yes" checked> 要吃飯（便當、丼飯）</label>
+            <label><input type="radio" name="rice" value="no"> 吃麵或其它澱粉（拉麵、披薩）</label>
+        </div>
+
+        <div class="q-group">
+            <div class="q-title">Q3: 想吃邪惡重口味，還是清淡點？</div>
+            <label><input type="radio" name="heavy" value="yes" checked> 越邪惡、越滿足越好！</label>
+            <label><input type="radio" name="heavy" value="no"> 偏向清淡健康</label>
+        </div>
+
+        <button type="button" class="btn" onclick="drawLunch()">啟動命運之輪 🎲</button>
+    </form>
+
+    <div id="result-box">
+        <div>✨ 宇宙指引你的午餐首選 ✨</div>
+        <div id="result-text">⏳ 感應中...</div>
+        <div style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">不要再猶豫了，快去訂餐吧！</div>
     </div>
 </div>
 
 <script>
-    const widgetLunchPool = [
+    const lunchPool = [
         { name: "日式拉麵", soup: true, rice: false, heavy: true },
         { name: "熱騰騰的小火鍋", soup: true, rice: true, heavy: true },
         { name: "台式便當/乾麵", soup: false, rice: true, heavy: false },
@@ -165,13 +155,13 @@
     ];
 
     function drawLunch() {
-        // 1. 取得選擇
-        const wantSoup = document.querySelector('input[name="widget_soup"]:checked').value === "yes";
-        const wantRice = document.querySelector('input[name="widget_rice"]:checked').value === "yes";
-        const wantHeavy = document.querySelector('input[name="widget_heavy"]:checked').value === "yes";
+        // 1. 取得選擇（改回最乾淨的 radio name 撈法）
+        const wantSoup = document.querySelector('input[name="soup"]:checked').value === "yes";
+        const wantRice = document.querySelector('input[name="rice"]:checked').value === "yes";
+        const wantHeavy = document.querySelector('input[name="heavy"]:checked').value === "yes";
 
-        // 2. 篩選
-        let candidates = widgetLunchPool.filter(item => {
+        // 2. 篩選符合條件的餐廳
+        let candidates = lunchPool.filter(item => {
             let score = 0;
             if (item.soup === wantSoup) score++;
             if (item.rice === wantRice) score++;
@@ -180,22 +170,22 @@
         });
 
         if (candidates.length === 0) {
-            candidates = widgetLunchPool;
+            candidates = lunchPool;
         }
 
-        // 3. 抽獎
+        // 3. 隨機抽選
         const randomIndex = Math.floor(Math.random() * candidates.length);
         const finalChoice = candidates[randomIndex].name;
 
-        // 4. 顯示（這裡修正了 ID 名稱）
+        // 4. 渲染到網頁畫面上
         const resultBox = document.getElementById('result-box');
         const resultText = document.getElementById('result-text');
         
-        if(resultBox && resultText) {
+        if (resultBox && resultText) {
             resultBox.style.display = 'block';
             resultText.innerText = `【 ${finalChoice} 】`;
         } else {
-            alert("找不到結果顯示區域，程式碼 ID 設定有誤！");
+            console.error("找不到結果區塊的 ID！");
         }
     }
 </script>
