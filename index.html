@@ -122,4 +122,161 @@
             padding: 25px;
             background: rgba(255, 215, 0, 0.04);
             border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 1
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.8s ease-out;
+            text-align: center;
+        }
+        .tarot-header {
+            font-size: 0.9rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #result-card-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 12px 0 5px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        #result-orientation {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .orient-up { color: #2ecc71; }
+        .orient-rev { color: #e74c3c; }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            margin: 15px 0;
+        }
+        #result-meaning {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            text-align: left;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🔮 潛意識塔羅星盤</h2>
+    <div class="subtitle">閉上眼呼吸，連結你當下的精神狀態：</div>
+    
+    <form id="tarotForm">
+        <div class="q-group">
+            <div class="q-title">Q1: 靜下心，你現在直覺是什麼顏色？</div>
+            <div class="options-grid">
+                <label><input type="radio" name="color" value="0" checked><span class="color-preview" style="background: #e74c3c;"></span> 紅色 (熱情/焦慮)</label>
+                <label><input type="radio" name="color" value="1"><span class="color-preview" style="background: #3498db;"></span> 藍色 (沉靜/憂鬱)</label>
+                <label><input type="radio" name="color" value="2"><span class="color-preview" style="background: #2ecc71;"></span> 綠色 (療癒/停滯)</label>
+                <label><input type="radio" name="color" value="3"><span class="color-preview" style="background: #f1c40f;"></span> 黃色 (明亮/浮躁)</label>
+                <label><input type="radio" name="color" value="4"><span class="color-preview" style="background: #9b59b6;"></span> 紫色 (神祕/壓抑)</label>
+                <label><input type="radio" name="color" value="5"><span class="color-preview" style="background: #111116;"></span> 黑色 (未知/保護)</label>
+            </div>
+        </div>
+
+        <div class="q-group">
+            <div class="q-title">Q2: 感應內心，你覺得現在自己像什麼形狀？</div>
+            <div class="options-grid">
+                <label><input type="radio" name="shape" value="0" checked><span class="shape-icon">◯</span> 圓形 (和諧/循環)</label>
+                <label><input type="radio" name="shape" value="1"><span class="shape-icon">△</span> 三角形 (聚焦/銳利)</label>
+                <label><input type="radio" name="shape" value="2"><span class="shape-icon">▢</span> 正方形 (穩固/框架)</label>
+                <label><input type="radio" name="shape" value="3"><span class="shape-icon">⚡</span> 閃電形 (變革/衝擊)</label>
+                <label><input type="radio" name="shape" value="4"><span class="shape-icon">🌀</span> 螺旋形 (探索/迷惘)</label>
+                <label><input type="radio" name="shape" value="5"><span class="shape-icon">✨</span> 星形 (希望/靈感)</label>
+            </div>
+        </div>
+
+        <button type="button" class="btn" onclick="drawTarot()">開啟潛意識通道 🌟</button>
+    </form>
+
+    <div id="result-box">
+        <div class="tarot-header">🔮 宇宙神諭開牌 🔮</div>
+        <div id="result-card-name">🔑 牌名載入中...</div>
+        <div id="result-orientation">【正位】</div>
+        <div class="divider"></div>
+        <div id="result-meaning">啟示訊息...</div>
+    </div>
+</div>
+
+<script>
+    // 22張大阿爾克那經典牌義庫
+    const tarotDeck = [
+        { name: "0 愚者酸辣粉 (The Fool)", upright: "象徵新的開始、冒險與無限可能性。現在是跳脫框架、勇敢相信直覺出發的時刻。", reversed: "提醒你點杯飲料。" },
+        { name: "I 魔術師涼麵 (The Magician)", upright: "你擁有強大的創造力與資源，萬事俱備。只要專注並付諸行動，內心的藍圖就能實現。", reversed: "可能流於空談或計劃難產，提防身邊的欺騙，或是你低估了自己的潛力。" },
+        { name: "II 女祭司飯糰 (The High Priestess)", upright: "這是一個需要向內尋求答案的時刻。信任你的直覺與潛意識，保持冷靜沉著與智慧。", reversed: "你可能忽略了內心的聲音，過度被外界的理性或焦慮左右，需要重新沉澱。" }
+        { name: "V 教皇牛肉麵 (The Hierophant)", upright: "你會獲得體制、傳統或某個心靈導師的指引。這是一個適合遵循常規、尋求援助的時機。", reversed: "暗示你想打破常規、反叛體制，但也要小心盲目服從或是思想流於教條主義。" },
+        { name: "VII 戰車咖哩飯 (The Chariot)", upright: "意志力高昂！不論眼前有什麼障礙，只要保持專注與高度的控制力，就能贏得勝利。", reversed: "注意局勢可能正在失控，或是你失去了前進的方向、情緒侵略性過強而導致挫折。" },
+        { name: "VIII 力量滷肉飯 (Strength)", upright: "真正的力量來自內心的堅定與溫柔。用耐心與包容去化解眼前的野獸與危機吧。", reversed: "感到軟弱與自我懷疑。你可能正在跟自己的負面情緒或肉體慾望搏鬥，顯得情緒失控。" },
+        { name: "IX 隱者健康餐 (The Hermit)", upright: "這是一段精神內省的孤獨旅程。暫時遠離塵囂、沉澱思緒，真正的智慧會在寂靜中顯現。", reversed: "小心流於孤立寂寞、拒絕與他人溝通，或是你正在用偏激的態度逃避現實。" },
+        { name: "X 命運之輪雞腿便當 (Wheel of Fortune)", upright: "命運的轉機已至。大輪盤正在轉動，好運與命中注定的新循環正要開始，順應改變吧。", reversed: "面臨短暫的低潮或厄運。不要抗拒改變，這只是在考驗你如何擺脫惡性循環。" },
+        { name: "XI 正義豆花 (Justice)", upright: "講求公平、誠實與客觀的因果報應。你的決策必須建立在理性衡量與問心無愧之上。", reversed: "可能遭遇不公正的對待、偏見，或者你正拒絕認錯，試圖逃避因果責任。" },
+        { name: "XIV 節制水餃 (Temperance)", upright: "代表完美的平衡與淨化。不論心靈或溝通，請保持順暢、和諧，讓療癒的能量慢慢流動。", reversed: "生活或情緒失衡了，缺乏有效的溝通，生活過度浪費或與人產生價值觀衝突。" },
+        { name: "XV 惡魔鬆餅 (The Devil)", upright: "你可能正被某種強烈的物質慾望、束縛或不良習慣所沉迷綑綁。正視內心的陰暗面。", reversed: "覺醒的時刻到了！你正準備擺脫束縛、重獲自由，並下定決心割捨長久以來的惡習。" },
+        { name: "XVI 高塔親子丼 (The Tower)", upright: "突如其來的衝擊與突變。雖然幻滅與打破常規令人震驚，但這能徹底清除不穩固的根基。", reversed: "危機雖然避開了，但餘波盪漾。你正緊抓著搖搖欲墜的過去不放，抗拒重組。" },
+        { name: "XVII 星星蛋包飯 (The Star)", upright: "黑暗過後的希望之光。內心將獲得寧靜與療癒，前途光明，靈感正源源不絕地湧現。", reversed: "感到失望與失去信心，對未來感到好高騖遠、缺乏靈感。需要重新找回信念。" },
+        { name: "XVIII 月亮乾拌麵 (The Moon)", upright: "潛意識中的不安、迷茫與隱藏的恐懼浮上表面。這是一段看不清真相的迷霧期，信任直覺。", reversed: "撥雲見日！恐懼正在消除，隱瞞的謊言與真相即將揭開，你正在直面內心的陰暗。" },
+        { name: "XIX 太陽 義大利麵(The Sun)", upright: "充滿無盡的成功、快樂與活力！你的內心無比自信，一切事物都在光明磊落中蓬勃發展。", reversed: "陷入短暫的低調期，熱情有些減退。或者要小心過度自信、被虛假的成功表象所蒙蔽。" },
+        { name: "XX 審批披薩 (Judgement)", upright: "重大決定與覺醒的時刻。因果即將揭曉，你即將迎來精神上的復活，看清真正的使命。", reversed: "面臨關鍵時刻卻猶豫不決。你可能錯失良機，請直接直接點份炸機。" },
+    ];
+
+    function drawTarot() {
+        // 1. 蒐集使用者的精神密碼 (顏色 & 形狀)
+        const colorVal = parseInt(document.querySelector('input[name="color"]:checked').value);
+        const shapeVal = parseInt(document.querySelector('input[name="shape"]:checked').value);
+
+        // 2. 混合演算法：用精神密碼作為基礎種子，搭配隨機術，決定抽出的塔羅牌
+        // 確保每一次不同的顏色形狀，會影響抽牌的潛在命運權重
+        const magicSeed = (colorVal * 7) + (shapeVal * 13) + Math.floor(Math.random() * 100);
+        const cardIndex = magicSeed % tarotDeck.length;
+        const selectedCard = tarotDeck[cardIndex];
+
+        // 3. 隨機決定 正位 或 逆位
+        const isUpright = Math.random() >= 0.5;
+
+        // 4. 撈取對應 DOM
+        const resultBox = document.getElementById('result-box');
+        const cardNameEl = document.getElementById('result-card-name');
+        const orientEl = document.getElementById('result-orientation');
+        const meaningEl = document.getElementById('result-meaning');
+
+        // 5. 將結果渲染至網頁
+        if (resultBox && cardNameEl && orientEl && meaningEl) {
+            // 先隱藏再顯示，做出動畫感
+            resultBox.style.display = 'none';
+            
+            // 寫入資料
+            cardNameEl.innerText = selectedCard.name;
+            
+            if (isUpright) {
+                orientEl.innerText = "【 🔮 正位 🔮 】";
+                orientEl.className = "orient-up";
+                meaningEl.innerText = selectedCard.upright;
+            } else {
+                orientEl.innerText = "【 🌀 逆位 🌀 】";
+                orientEl.className = "orient-rev";
+                meaningEl.innerText = selectedCard.reversed;
+            }
+            
+            // 重新顯示
+            resultBox.style.display = 'block';
+        } else {
+            console.error("網頁元素綁定失敗！");
+        }
+    }
+</script>
+
+</body>
+</html>
